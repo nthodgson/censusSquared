@@ -11,7 +11,7 @@ This web app is still in progress.
 
 ### Description
 
-This web app allows people to visualize the data provided by the US Census Bureau using a customizable user interface. 
+Using a customizable user interface, this web app allows people to visualize and compare the stratification of people from different socioeconomic backgrounds using the data provided by the US Census Bureau.
 
 ### Execution Specifications
 
