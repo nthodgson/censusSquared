@@ -112,6 +112,21 @@
       	canvas:hover {
       		display: none;
       	}
+      	div.highlight {
+      		background: #eaeaea;
+      		margin-top: 40px;
+      		padding: 10px;
+      		border-radius: 8px;
+      	}
+      	label.highlight {
+      		font-weight: bold;
+      		margin-bottom: 0px;
+      		margin-left: 10px;
+      	}
+      	label#dataHighlighting {
+      		margin-left: 60px;
+      		margin-bottom: 0px;
+      	}
 
 	</style>
 </head>
@@ -278,6 +293,12 @@
 						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
 					</tr>
 				</table>
+				<div class="form-row highlight">
+					<label for="dataHighlighting" class="highlight">Data Highlighting Sections: </label>
+					<label class="radio-inline" id="dataHighlighting"><input type="radio" name="optradio" checked>   None</label>
+					<label class="radio-inline" id="dataHighlighting"><input type="radio" name="optradio">   Below Poverty</label>
+					<label class="radio-inline" id="dataHighlighting"><input type="radio" name="optradio">   Below Median Income</label>
+				</div>
 			</div>
 			<div class="col-md-3 options">
 				<span class="options title">Selected Options</span><br><br>
@@ -366,10 +387,8 @@
 						</div>
 					</div>
 				</form>
-
 			</div>
 		</div>
-
 
 	</div>
 
@@ -384,6 +403,7 @@
 		var canvas = document.getElementById('myCanvas');
 		var numPeople;
 		context = canvas.getContext('2d');
+		
 		$(document).ready(function() {
 			var i, j;
 			context.strokeStyle = "red";
