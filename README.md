@@ -7,12 +7,18 @@ Nathan Hodgson
 
 ### Note
 
-This web app is still in progress. 
+This web app is still in progress.
 
 ### Description
 
-Using a customizable user interface, this web app allows people to visualize and compare the stratification of people from different socioeconomic backgrounds using the data provided by the US Census Bureau.
+Using a customizable user interface, this web app allows people to visualize and compare the stratification of people from different socioeconomic backgrounds using the income data provided by the US Census Bureau.
 
 ### Execution Specifications
 
-Open index.html
+To run locally: 
+
+```shell
+python -m http.server
+```
+
+This serves port 8000 at http://0.0.0.0:8000/ and the web app can be accessed here on any browser. 
