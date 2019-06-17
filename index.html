@@ -1,427 +1,129 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!--------------- Bootstrap CSS -------------------->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
-	<title>Census²</title>
-	<style>
-		@font-face {
-        	font-family: "Hero Light";
-        	src: url("Hero Font/Hero Light.otf") format("truetype");
-      	}
-      	h1.title {
-      		font-family: "Hero Light", Verdana, Tahoma;
-      		font-weight: lighter;
-      		text-align: center;
-      		font-size: 40px;
-      	}
-      	div.title {
-      		text-align: center;
-      		padding-top: 5vh;
-      		padding-bottom: 5vh;
-      	}
-      	table.grid {
-      		border: 1px solid;
-      		margin-top: 3px;
-      	}
-      	td {
-      		text-align: center;
-      		border: 1px solid;
-      		width: 60px;
-      		height: 60px;
-      		padding: 0px;
-      	}
-      	td.grid:hover {
-      		cursor: pointer;
-      		background: #ff6d6d;
-      	}
-      	td.label {
-      		border: 1px solid white;
-      		border-right: 1px solid;
-      		font-size: 15px;
-      		text-align: left;
-      		padding: 0px;
-      		padding-right: 2vw;
-      		width: 150px;
-      		height: 60px;
-      	}
-      	td.header {
-      		border: 1px solid white;
-      		border-bottom: 1px solid;
-      		font-size: 12px;
-      		height: 30px;
-      		padding: 0px;
-      	}
-      	tr.header {
-      		border: 1px solid white;
-      	}
-      	td.dollar {
-      		border-bottom: 1px solid white;
-      		text-align: right;
-      		padding-right: 10px;
-      	}
-      	span.title {
-      		text-align: center;
-      		font-size: 3vh;
-      		padding-bottom: 1vh;
-      		border-bottom: 1px solid;
-      		font-weight: bold;
-      	}
-      	div.container {
-      		margin-top: 6vh;
-      	}
-      	input.percentile {
-      		height: 25px;
-      	}
-      	input.data {
-      		height: 25px;
-      	}
-      	div.percentile {
-      		padding-top: 5px;
-      		padding-bottom: 5px;
-      		background: #eaeaea;
-      	}
-      	form.data {
-      		margin-top: 5px;
-      	}
-      	form.percentile {
-      		margin-top: 5px;
-      		margin-bottom: 10px;
-      	}
-      	span.percentile {
-      		font-weight: bold;
-      	}
-      	span.data {
-      		font-weight: bold;
-      	}
-      	button.data {
-      		margin-top: 10px;
-      		width: 100%;
-      	}
-      	select.form-control:hover {
-      		cursor: pointer;
-      	}
-      	canvas {
-      		width: 100%;
-      		height: 100%;
-      		padding: 0px;
-      		margin-bottom: -6px;
-      	}
-      	canvas:hover {
-      		display: none;
-      	}
-      	div.highlight {
-      		background: #eaeaea;
-      		margin-top: 40px;
-      		padding: 10px;
-      		border-radius: 8px;
-      	}
-      	label.highlight {
-      		font-weight: bold;
-      		margin-bottom: 0px;
-      		margin-left: 10px;
-      	}
-      	label#dataHighlighting {
-      		margin-left: 60px;
-      		margin-bottom: 0px;
-      	}
+<meta charset="utf-8">
+<title>Census²</title>
 
-	</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Generic page styles -->
+<!-- <link rel="stylesheet" href="jQuery_file_upload/css/style.css"> -->
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="jQuery_file_upload/css/jquery.fileupload.css">
+<style>
+	@font-face {
+	  font-family: "Hero Light";
+	  src: url("fonts/Hero Font/Hero Light.otf") format("truetype");
+	  font-family: "Nexa";
+	  src: url("fonts/Nexa/Nexa-Light.otf") format("truetype");
+	}
+	body {
+	  padding-top: 60px;
+	}
+	h1.title {
+		text-align: center;
+		font-family: "Hero Light";
+		font-size: 7vh;
+	}
+	div.container {
+		
+	}
+	button.fullSite {
+		position: absolute;
+		bottom: 5%;
+		width: 12%;
+		left: 45%;
+	}
+	span.arrowRight {
+		margin-left: 8px;
+	}
+</style>
 </head>
 <body>
-	<div class="container">
-		<!-- <div class="row dropdown">
-  			<div class="btn-group">
-				<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Marital Status
-				</button>
-				<div class="dropdown-menu">
-					<a class="dropdown-item allMarital" href="#">Show All</a>
-					<a class="dropdown-item single" href="#">Single</a>
-					<a class="dropdown-item married" href="#">Married</a>
-					<a class="dropdown-item widowed" href="#">Widowed</a>
-					<a class="dropdown-item divorced" href="#">Divorced</a>
-				</div>
-			</div>
-		</div> -->
-		<!-- 
-		<div class="row title">
-			<div class="col">
-				<h1 class="title">Census²</h1> 
-			</div>
-		</div> 
-		-->
-		<div class="row mainBody">
-			<div class="col-md-9 gridInfo">
-				<table class="grid">
-					<tr class="header">
-						<td class="header dollar">$</td>
-						<td class="header">0-10</td>
-						<td class="header">10-20</td>
-						<td class="header">20-40</td>
-						<td class="header">40-60</td>
-						<td class="header">60-80</td>
-						<td class="header">80-100</td>
-						<td class="header">100-125</td>
-						<td class="header">125-150</td>
-						<td class="header">150+</td>
-					</tr>
-					<tr class="grid">
-						<td class="label">Managers, Doctors, Lawyers</td>
-						<td class="grid example"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Other Professionals</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Clerical and Sales</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Skilled Blue Collar</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Less Skilled Blue Collar</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Farmers</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Retired</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Unemployed</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<table class="grid">
-					<tr class="grid">
-						<td class="label">Other Not in Labor Force</td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-						<td class="grid"><canvas id="myCanvas" width="60" height="60"></canvas></td>
-					</tr>
-				</table>
-				<div class="form-row highlight">
-					<label for="dataHighlighting" class="highlight">Data Highlighting Sections: </label>
-					<label class="radio-inline" id="dataHighlighting"><input type="radio" name="optradio" checked>   None</label>
-					<label class="radio-inline" id="dataHighlighting"><input type="radio" name="optradio">   Below Poverty</label>
-					<label class="radio-inline" id="dataHighlighting"><input type="radio" name="optradio">   Below Median Income</label>
-				</div>
-			</div>
-			<div class="col-md-3 options">
-				<span class="options title">Selected Options</span><br><br>
-				<div class="form-group">
-					<label for="exampleFormControlSelect1">Marital Status</label>
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option>Show All</option>
-						<option>Single</option>
-						<option>Married</option>
-						<option>Widowed</option>
-						<option>Divorced</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlSelect1">Race</label>
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option>Show All</option>
-						<option>White</option>
-						<option>Black</option>
-						<option>Asian</option>
-						<option>Hispanic</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlSelect1">Occupation</label>
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option>Sort by</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlSelect1">Data By</label>
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option>Population</option>
-					</select>
-				</div>
-				<span class="options" style="color: red; font-weight: normal;">Each line represents 480,000 people.</span><br><br>
-				<span class="options percentile">Show Percentiles</span>
-				<form class="percentile">
-					<div class="form-row percentile">
-						<div class="col-sm-1">
-							<div class="form-check">
-  								<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<span>Lower Percentile</span>
-						</div>
-						<div class="col-sm-5">
-							<input type="text" class="form-control percentile">
-						</div>
-					</div>
-					<div class="form-row percentile">
-						<div class="col-sm-1">
-							<div class="form-check">
-  								<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<span>Upper Percentile</span>
-						</div>
-						<div class="col-sm-5">
-							<input type="text" class="form-control percentile">
-						</div>
-					</div>
-				</form>
-				<span class="options data">Data Over Time</span>
-				<form class="data">
-					<div class="form-row data">
-						<div class="col">
-							<input type="text" class="form-control data" placeholder="Start Year">
-						</div>
-						<div class="col">
-							<input type="text" class="form-control data" placeholder="End Year">
-						</div>
-					</div>
-					<div class="form-row data">
-						<div class="col" style="text-align: center;">
-							<button type="button" class="btn btn-info data" aria-haspopup="true" aria-expanded="false">
-								Play
-							</button>
-						</div>
-						<div class="col" style="text-align: center;">
-							<button type="button" class="btn btn-info data" aria-haspopup="true" aria-expanded="false">
-								Pause
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+<div class="container">
+    <h1 class="title">Census ²</h1>
+    <!-- The fileinput-button span is used to style the file input field as button -->
+    <br>
+    <br>
+    <!-- Credits: view-source:https://blueimp.github.io/jQuery-File-Upload/basic.html -->
+    <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Notes</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>Only data files of type <strong>TSV</strong> can be read by the compiler.</li>
+                    <li>Please refer to the <a href="https://github.com/nthodgson/censusSquared">project website</a> for more information about file structure.</li>
+                    <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser support</a>).</li>
+                    <li>Built with the <a href="http://getbootstrap.com/">Bootstrap</a> CSS framework.</li>
+                </ul>
+            </div>
+        </div>
+        <br>
+    <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+    <br>
+    <br>
+    <!-- The global progress bar -->
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"></div>
+    <br>
+</div>
+<button class="btn btn-primary btn-lg fullSite" onclick="fadePage()">
+	To Full Site
+	<span class="glyphicon glyphicon-circle-arrow-right arrowRight"></span>
+</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="jQuery_file_upload/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="jQuery_file_upload/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="jQuery_file_upload/js/jquery.fileupload.js"></script>
+<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+	
+	/*jslint unparam: true */
+	/*global window, $ */
+	$(function () {
+	    'use strict';
+	    // Change this to the location of your server-side upload handler:
+	    var url = window.location.hostname === 'blueimp.github.io' ?
+	                '//jquery-file-upload.appspot.com/' : 'server/php/';
+	    $('#fileupload').fileupload({
+	        url: url,
+	        dataType: 'json',
+	        done: function (e, data) {
+	            $.each(data.result.files, function (index, file) {
+	                $('<p/>').text(file.name).appendTo('#files');
+	            });
+	        },
+	        progressall: function (e, data) {
+	            var progress = parseInt(data.loaded / data.total * 100, 10);
+	            $('#progress .progress-bar').css(
+	                'width',
+	                progress + '%'
+	            );
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	});
 
-	</div>
+	function fadePage() {
+		$("body").fadeOut();
+		setTimeout(
+			function () {
+				window.location.href = 'grid.html';
+			}, 500);
+	}
 
-	<!-------------- Latest D3 source code --------------->
-	<script src="https://d3js.org/d3.v5.min.js"></script> 
-	<!-------------------------- Bootstrap Javascript and JQuery -------------------------------------------->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<!------------------------------------------------------------->
-	<script>
-		var canvas = document.getElementById('myCanvas');
-		var numPeople;
-		context = canvas.getContext('2d');
-
-		$(document).ready(function() {
-			var i, j;
-			context.strokeStyle = "red";
-			for (i = 0; i < 8; i++) {
-				j = 58 - (i*4);
-				context.beginPath();
-				context.moveTo(0, j);
-				context.lineTo(60, j);
-				context.stroke();
-			}
-		});
-
-		$("td.grid").mouseover(function() {
-			$(this).html("<span style='color: white; font-size: 20px; font-weight: lighter'>3.8M</span>");
-		});
-
-	</script>
-	<!------------------------------------------------------------->
-
+</script>
 </body>
 </html>
