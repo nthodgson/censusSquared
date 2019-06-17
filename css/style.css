@@ -1,0 +1,166 @@
+body {
+  font-family: sans-serif;
+  font-size: 15px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar:hover {
+  fill: #bcbcbc ;
+  cursor: pointer;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #efefef;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+@font-face {
+  font-family: "Hero Light";
+  src: url("Hero Font/Hero Light.otf") format("truetype");
+}
+span.title {
+  text-align: center;
+  font-size: 3vh;
+  padding-bottom: 1vh;
+  border-bottom: 1px solid;
+  font-weight: bold;
+}
+div.container {
+  margin-top: 6vh;
+}
+input.percentile {
+  height: 25px;
+}
+input.data {
+  height: 25px;
+}
+div.percentile {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #eaeaea;
+}
+form.data {
+  margin-top: 5px;
+}
+form.percentile {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+span.percentile {
+  font-weight: bold;
+}
+span.data {
+  font-weight: bold;
+}
+button.data {
+  margin-top: 10px;
+  width: 100%;
+}
+select.form-control:hover {
+  cursor: pointer;
+}
+div.highlight {
+  background: #eaeaea;
+  margin-top: 40px;
+  padding: 10px;
+  border-radius: 8px;
+}
+label.highlight {
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+input.highlight {
+  margin-right: 7px;
+}
+label#dataHighlighting {
+  margin-left: 60px;
+  margin-bottom: 0px;
+}
+div.gridContainer {
+  display: none;
+}
+div.gridInfo {
+  height: 90vh;
+  position: relative;
+}
+div.options {
+  height: 90vh;
+  position: relative;
+}
+div.highlight {
+  position: absolute;
+  width: 95%;
+  bottom: 0;
+}
+span.selectOptions {
+  position: absolute;
+  width: 50%;
+  text-align: center;
+  left: 25%;
+  top: 40%;
+}
+input.importData {
+  margin-top: 15px;
+  width: 60%;
+}
+div.data {
+  text-align: center;
+  margin-top: 3vh;
+}
+input#tsvfile:hover {
+  cursor: pointer;
+}
+div.alert {
+  position: fixed;
+  top: 1%;
+  width: 30%;
+  text-align: center;
+  left: 35%;
+  display: none;
+}
+div.drawGrid {
+  text-align: center;
+  margin-top: 3vh;
+}
+button.drawGrid {
+  width: 60%;
+}
+span.sortError {
+  color: red;
+  display: none;
+}
