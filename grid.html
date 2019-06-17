@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!--------------- Stylesheet Links -------------------->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
+	<!--<link rel="stylesheet" href="css/style.css">-->
+	<!----------------------------------------------------->
+	<title>Census²</title>
+	<style>
+		body {
+		  font-family: sans-serif;
+		  font-size: 15px;
+		  display: none;
+		}
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+
+		.bar:hover {
+		  fill: #bcbcbc ;
+		  cursor: pointer;
+		}
+
+		.x.axis path {
+		  display: none;
+		}
+
+		.d3-tip {
+		  line-height: 1;
+		  font-weight: bold;
+		  padding: 12px;
+		  background: rgba(0, 0, 0, 0.8);
+		  color: #efefef;
+		  border-radius: 2px;
+		}
+
+		/* Creates a small triangle extender for the tooltip */
+		.d3-tip:after {
+		  box-sizing: border-box;
+		  display: inline;
+		  font-size: 10px;
+		  width: 100%;
+		  line-height: 1;
+		  color: rgba(0, 0, 0, 0.8);
+		  content: "\25BC";
+		  position: absolute;
+		  text-align: center;
+		}
+
+		/* Style northward tooltips differently */
+		.d3-tip.n:after {
+		  margin: -1px 0 0 0;
+		  top: 100%;
+		  left: 0;
+		}
+
+		@font-face {
+		  font-family: "Hero Light";
+		  src: url("fonts/Hero Font/Hero Light.otf") format("truetype");
+		}
+		span.title {
+		  text-align: center;
+		  font-size: 3vh;
+		  padding-bottom: 1vh;
+		  border-bottom: 1px solid;
+		  font-weight: bold;
+		}
+		div.container {
+		  margin-top: 6vh;
+		}
+		input.percentile {
+		  height: 25px;
+		}
+		input.data {
+		  height: 25px;
+		}
+		div.percentile {
+		  padding-top: 5px;
+		  padding-bottom: 5px;
+		  background: #eaeaea;
+		}
+		form.data {
+		  margin-top: 5px;
+		}
+		form.percentile {
+		  margin-top: 5px;
+		  margin-bottom: 10px;
+		}
+		span.percentile {
+		  font-weight: bold;
+		}
+		span.data {
+		  font-weight: bold;
+		}
+		button.data {
+		  margin-top: 10px;
+		  width: 100%;
+		}
+		select.form-control:hover {
+		  cursor: pointer;
+		}
+		div.highlight {
+		  background: #eaeaea;
+		  margin-top: 40px;
+		  padding: 10px;
+		  border-radius: 8px;
+		}
+		label.highlight {
+		  font-weight: bold;
+		  margin-bottom: 0px;
+		  margin-left: 10px;
+		}
+		input.highlight {
+		  margin-right: 7px;
+		}
+		label#dataHighlighting {
+		  margin-left: 60px;
+		  margin-bottom: 0px;
+		}
+		div.gridContainer {
+		  display: none;
+		}
+		div.gridInfo {
+		  height: 90vh;
+		  position: relative;
+		}
+		div.options {
+		  height: 90vh;
+		  position: relative;
+		}
+		div.highlight {
+		  position: absolute;
+		  width: 95%;
+		  bottom: 0;
+		}
+		span.selectOptions {
+		  position: absolute;
+		  width: 50%;
+		  text-align: center;
+		  left: 25%;
+		  top: 40%;
+		}
+		input.importData {
+		  margin-top: 15px;
+		  width: 60%;
+		}
+		div.data {
+		  text-align: center;
+		  margin-top: 3vh;
+		}
+		input#tsvfile:hover {
+		  cursor: pointer;
+		}
+		div.alert {
+		  position: fixed;
+		  top: 1%;
+		  width: 30%;
+		  text-align: center;
+		  left: 35%;
+		  display: none;
+		}
+		div.drawGrid {
+		  text-align: center;
+		  margin-top: 3vh;
+		}
+		button.drawGrid {
+		  width: 60%;
+		}
+		span.sortError {
+		  color: red;
+		  display: none;
+		}
+		input.highlight:hover {
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+
+		<div class="alert alert-success" role="alert">
+			<strong>Success!</strong> Your data is now ready to analyze.
+		</div>
+		<div class="alert alert-warning" role="alert">
+			<strong>Error: </strong>Please select an option to sort by. 
+		</div>
+		<div class="row mainBody">
+			<div class="col-md-9 gridInfo">
+				<div class="gridContainer">
+					<div id="vis"></div>
+				</div>
+				<span class="selectOptions">Upload a data file and select options on the right to view grid data.</span>
+				<div class="form-row highlight">
+					<label for="dataHighlighting" class="highlight">Data Highlighting Sections: </label>
+					<label class="radio-inline" id="dataHighlighting"><input type="radio" value="none" class="highlight" name="optradio" checked>None</label>
+					<label class="radio-inline" id="dataHighlighting"><input type="radio" value="belowPoverty" class="highlight" name="optradio">Below Poverty</label>
+					<label class="radio-inline" id="dataHighlighting"><input type="radio" value="belowMedian" class="highlight" name="optradio">Below Median Income</label>
+				</div>
+			</div>
+			<div class="col-md-3 options">
+				<span class="options title">Selected Options</span><br><br>
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Sort By</label>
+					<select class="form-control sortBy" id="exampleFormControlSelect1">
+						<option>---</option>
+						<option>Marital Status</option>
+						<option>Race</option>
+						<option>Occupation</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Marital Status</label>
+					<select class="form-control maritalStat" id="exampleFormControlSelect1">
+						<option>Show All</option>
+						<option>Single</option>
+						<option>Married</option>
+						<option>Widowed</option>
+						<option>Divorced</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Race</label>
+					<select class="form-control raceStat" id="exampleFormControlSelect1">
+						<option>Show All</option>
+						<option>White</option>
+						<option>Black</option>
+						<option>Asian</option>
+						<option>Hispanic</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Occupation</label>
+					<select class="form-control occupationStat" id="exampleFormControlSelect1">
+						<option>Show All</option>
+						<option>Managers, Doctors, Lawyers</option>
+						<option>Other Professionals</option>
+						<option>Clerical and Sales</option>
+						<option>Skilled Blue Collar</option>
+						<option>Less Skilled Blue Collar</option>
+						<option>Farmers</option>
+						<option>Retired</option>
+						<option>Unemployed</option>
+						<option>Other Not in Labor Force</option>
+					</select>
+				</div>
+				<span class="options percentile">Show Percentiles</span>
+				<form class="percentile">
+					<div class="form-row percentile">
+						<div class="col-sm-1">
+							<div class="form-check">
+  								<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<span>Lower Percentile</span>
+						</div>
+						<div class="col-sm-5">
+							<input type="text" class="form-control percentile">
+						</div>
+					</div>
+					<div class="form-row percentile">
+						<div class="col-sm-1">
+							<div class="form-check">
+  								<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<span>Upper Percentile</span>
+						</div>
+						<div class="col-sm-5">
+							<input type="text" class="form-control percentile">
+						</div>
+					</div>
+				</form>
+				<br>
+				<div class="drawGrid">
+					<button type="button" class="btn btn-outline-success btn-lg drawGrid"  aria-haspopup="true" aria-expanded="false" onclick="showGrid()">
+						Draw Grid
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-------------- Latest D3 source code --------------->
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
+	<!--<script src="js/d3_script.js"></script>-->
+	<!-------------------------- Bootstrap Javascript and JQuery ---------------------------------------->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<!--------------------------------- XLSX Sourcecode ------------------------------------->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script> 
+	<!------------------------------------ Chart.js ----------------------------------------->
+	
+	<!--------------------------------------------------------------------------------------->
+	<script>
+		var gridStatus = {belowPoverty: false, belowMedian: false, sortBy: "---", maritalStatus: "Show All", race: "Show All", occupation: "Show All", dataImported: false, accessed: false};
+		var poverty = ["$0-10k", "$10-20k"];
+		var median = ["$0-10k", "$10-20k", "$20-40k"];
+
+		$(document).ready(function() {
+			$("body").fadeIn(500);
+		});
+
+		function importFile() {  
+			var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.tsv)$/; 
+			/*Checks whether the file is a valid tsv file*/  
+			if (regex.test($("#tsvfile").val().toLowerCase())) {  
+				gridStatus.dataImported = true;
+				$(".alert-success").fadeIn().delay(2000).fadeOut("slow");
+			}        
+			else {
+				$(".alert-warning").fadeIn().delay(3000).fadeOut("slow");
+			}  
+		}
+
+		function showGrid() {
+			gridStatus.sortBy = $("select.sortBy").val();
+			if (gridStatus.sortBy == "---") {
+				$("div.gridContainer").css("display", "none");
+				$("span.selectOptions").css("display", "inline");
+				$(".alert-warning").fadeIn().delay(3000).fadeOut("slow");
+				var originalColor = $("select.sortBy").css("border");
+				$("select.sortBy").css("border", "1px solid red").fadeIn();
+				setTimeout(function() {
+					$("select.sortBy").css("border", originalColor);
+				}, 3500);
+			}
+			else {
+				$("div.gridContainer").css("display", "inline");
+				$("span.selectOptions").css("display", "none");
+				updateGridSettings();
+			}
+		}
+
+		// https://stackoverflow.com/a/25221100
+		function parsePathName(path) {
+			return path.split('\\').pop().split('/').pop();
+		}
+
+		function convertStringToInt(num) {
+			num = num.replace(",", "");
+			var integer = parseInt(num, 10);
+			return integer;
+		}
+
+		$("input[type=radio]").on("click", function() {
+			if ($(this).val() == "belowPoverty") {
+				gridStatus.belowPoverty = true;
+				gridStatus.belowMedian = false;
+			}
+			else if ($(this).val() == "belowMedian") {
+				gridStatus.belowPoverty = false;
+				gridStatus.belowMedian = true;
+			}
+			else {
+				gridStatus.belowPoverty = false;
+				gridStatus.belowMedian = false;
+			}
+		});
+
+		function updateGridSettings() {
+			gridStatus.maritalStatus = $("select.maritalStat").val();
+			gridStatus.race = $("select.raceStat").val();
+			gridStatus.occupation = $("select.occupationStat").val();
+			var fileName;
+			if (gridStatus.sortBy == "Marital Status") {
+				if (gridStatus.race == "Show All")
+					fileName = "BothSex_AllRace.tsv";
+				else
+					fileName = "BothSex_" + gridStatus.race + "_Alone.tsv";
+			}
+			else if (gridStatus.sortBy == "Race") {
+				if (gridStatus.maritalStatus == "Show All")
+					fileName = "BothSex_AllRace_AllMarital.tsv";
+				else
+					fileName = "BothSex_AllRace_" + gridStatus.maritalStatus + ".tsv";
+			}
+			fillGrid(fileName);
+		}
+
+		// tsv loaded asynchronously
+		function fillGrid(fileName) {
+
+		  d3.tsv("Data/tsv/" + fileName, type, function(data) {
+
+		    var gridWidth = $("div.gridInfo").width();
+		    var gridHeight = $("div.gridInfo").height();
+
+		    var margin = {top: 45, right: 30, bottom: 20, left: 110},
+		        width = gridWidth - margin.left - margin.right,
+		        height = 150 - margin.top - margin.bottom;
+
+		    var formattotal = d3.format(".0%");
+
+		    var color = d3.scale.linear()
+		              .range(["#bad5e5","#8cbcd7","#5fa3ca","#328abd","#0571b0"])
+		              .domain([0,1000,4000,7000,10000]);
+
+		    var x = d3.scale.ordinal()
+		        .rangeRoundBands([0, width], .1);
+
+		    // Scales. Note the inverted domain fo y-scale: bigger is up!
+		    var y = d3.scale.sqrt()
+		        .range([80, 60]);
+
+		    var xAxis = d3.svg.axis()
+		        .scale(x)
+		        .orient("bottom");
+
+		    var yAxis = d3.svg.axis()
+		        .scale(y)
+		        .orient("left")
+		        .tickFormat(formattotal);
+
+		    var tip = d3.tip()
+		      .attr('class', 'd3-tip')
+		      .offset([-10, 0])
+		      .html(function(d) {
+		        if (d.total == 0)
+		        	return "<strong>0</strong>"
+		      	else if ((d.total).toString().length <= 3)
+		      		return "<strong>" + d.total + "k</strong>";
+		        else
+		          return "<strong>" + ((d.total).toFixed(1)/1000).toFixed(2) + "M</strong>";
+		      })
+
+		    // Data is nested by characteristic
+		    var countries = d3.nest()
+		        .key(function(d) { return d.characteristic; })
+		        .entries(data);
+
+		    // Compute the minimum and maximum income and total across symbols.
+		    x.domain(data.map(function(d) { return d.income; }));
+		    y.domain([0, d3.max(countries, function(s) { return s.values[0].total; })]);
+
+		    // Add an SVG element for each marital status, with the desired dimensions and margin.
+
+		    var svg = d3.select("#vis").selectAll("svg");
+		    	svg.remove();
+
+			svg = d3.select("#vis").selectAll("svg")
+				.data(countries)
+				.enter()
+				.append("svg:svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			svg.append("g")
+			  .attr("class", "x axis")
+			  .attr("font-family", "sans-serif")
+			  .attr("font-size", "12px")
+			  .attr("transform", "translate(0," + height + ")")
+			  .call(xAxis);
+
+			svg.append("g")
+			  // Hide y axis
+			  // .attr("class", "y axis")
+			  // .call(yAxis)
+			.append("text")
+			.attr("x", -110)
+			.attr("y", height/2)
+			.attr("dy", ".71em")
+			.attr("text-anchor", "start")
+			.attr("font-family", "sans-serif")
+			.attr("font-size", "14px")
+			.text(function(d) { return d.key});
+
+			// Accessing nested data: https://groups.google.com/forum/#!topic/d3-js/kummm9mS4EA
+			// data(function(d) {return d.values;}) 
+			// this will dereference the values for nested data for each group
+			svg.selectAll(".bar")
+			  .data(function(d) {return d.values;})
+			  .enter()
+			  .append("rect")
+			  .attr("class", "bar")
+			  .attr("x", function(d) { return x(d.income); })
+			  .attr("width", x.rangeBand())
+			  .attr("y", function(d) { return y(d.total); })
+			  .attr("height", function(d) { return height - y(d.total); })
+			  .attr("fill", function(d) {return color(d.total)})
+			  .attr("fill-opacity", function(d) {
+			  	if (gridStatus.belowPoverty && poverty.includes(d.income))
+			  		return "1";
+			  	else if (gridStatus.belowMedian && median.includes(d.income))
+			  		return "1";
+			  	else if (!gridStatus.belowPoverty && !gridStatus.belowMedian)
+			  		return "1";
+			  	else
+			  		return "0.2";
+			  })
+			  .on('mouseover', tip.show)
+			  .on('mouseout', tip.hide)
+			  svg.call(tip);
+
+		  });
+		}
+
+		function type(d) {
+		  d.total = +d.total;
+		  return d;
+		}
+
+	</script>
+	<!------------------------------------------------------------->
+
+</body>
+</html>
