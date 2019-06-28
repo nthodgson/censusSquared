@@ -7,146 +7,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="node_modules/chart.js/dist/time-series-chart.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
-    <style type="text/css">
-      body {
-        margin: 10px;
+    <style>
+      .chart div {
+        font: 10px sans-serif;
+        background-color: steelblue;
+        text-align: right;
+        padding: 3px;
+        margin: 1px;
+        color: white;
       }
-
-      .axis path,
-      .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-
-      .bar:hover {
-        fill: #bcbcbc ;
-      }
-
-      .x.axis path {
-        display: none;
-      }
-
-      .d3-tip {
-        line-height: 1;
-        font-weight: bold;
-        padding: 12px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #efefef;
-        border-radius: 2px;
-      }
-
-      /* Creates a small triangle extender for the tooltip */
-      .d3-tip:after {
-        box-sizing: border-box;
-        display: inline;
-        font-size: 10px;
-        width: 100%;
-        line-height: 1;
-        color: rgba(0, 0, 0, 0.8);
-        content: "\25BC";
-        position: absolute;
-        text-align: center;
-      }
-
-      /* Style northward tooltips differently */
-      .d3-tip.n:after {
-        margin: -1px 0 0 0;
-        top: 100%;
-        left: 0;
-      }
-      </style>
-    </head>
-
+    </style>
     <body>
-      <button id="reDrawButton">Redraw pie</button>
 
-      <script type="text/javascript">
-    var updatePie = function () {
+    <div class="chart"></div>
 
-      var width = 480,
-          height = 480,
-          radius = Math.min(width, height) / 2;
 
-      var color = d3.scale.category10(), svg;
-        
-      function graph(_selection) {
-           _selection.each(function(_data) {  
+    <script>
+      var data = [30, 86, 168, 281, 303, 365];
 
-          var pie = d3.layout.pie()
-            .value(function(d) { return d[1]; })
-              .sort(null);
-          
-          var arc = d3.svg.arc()
-            .innerRadius(radius - 100)
-            .outerRadius(radius - 50);
-            
-          if (!svg){
-            svg = d3.select(this).append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-          }
-          var path = svg.selectAll("path").data(pie(_data));
-          
-          path.enter().append("path")
-              .attr("fill", function(d, i) { return color(i); })
-              .attr("d", arc)
-              .each(function(d) {this._current = d;} );
-          
-          path.transition()
-                .attrTween("d", arcTween);
-          
-          path.exit().remove()
-          
-          function arcTween(a) {
-            var i = d3.interpolate(this._current, a);
-            this._current = i(0);
-            return function(t) {
-              return arc(i(t));
-            };
-          }
-        });
+      // d3.select(".chart")
+      //   .selectAll("div")
+      //   .data(data)
+      //     .enter()
+      //     .append("svg")
+      //     .attr("width", function(d) { return d; })
+      //     .text(function(d) { return d; });
 
-      }
-      return graph;
-    }
+      // d3.select(".chart")
+      //   .selectAll("div")
+      //   .append("div")
+      //   .style("width", "400px");
 
-    var updateFunction = updatePie();
-    var container = d3.select("body");
+      var svgContainer = d3.select(".chart").append("svg")
+                                            .attr("width", 200)
+                                            .attr("height", 200);
 
-    function update(data) {
-        container.datum(data).call(updateFunction);
-    }
+      var rectangle = svgContainer.append("rect")
+                                  .attr("x", 10)
+                                  .attr("y", 10)
+                                  .attr("width", 50)
+                                  .attr("height", 100);
 
-    var firstDataset = [
-      [
-        "blog 1", "6"
-      ],
-      [
-        "blog 2", "7"
-      ],
-      [
-        "blog 3", "8"
-      ]
-    ];
-
-    update(firstDataset);
-
-    document.getElementById("reDrawButton").addEventListener("click", reDrawChart);
-
-    function reDrawChart() {
-      var secondDataset = [
-        [
-          "foobar", "1"
-        ],
-        [
-          "barfoo", "2"
-        ]
-      ];
-      update(secondDataset);
-    }
+      svgContainer.append("rect")
+        .attr("x", 20)
+        .attr("y", 10)
+        .attr("width", 70)
+        .attr("height", 70)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2);
 
 
     </script>
