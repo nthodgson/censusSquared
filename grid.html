@@ -71,6 +71,12 @@
 		  border-bottom: 1px solid;
 		  font-weight: bold;
 		}
+		h3.title {
+			display: none;
+			text-align: center;
+			margin-bottom: 2vh;
+			font-size: 20px;
+		}
 		div.container {
 		  margin-top: 6vh;
 		}
@@ -93,7 +99,7 @@
 		  margin-bottom: 10px;
 		}
 		span.percentile {
-		  font-weight: bold;
+		  /*font-weight: bold;*/
 		}
 		span.data {
 		  font-weight: bold;
@@ -105,24 +111,6 @@
 		select.form-control:hover {
 		  cursor: pointer;
 		}
-		div.highlight {
-		  background: #eaeaea;
-		  margin-top: 40px;
-		  padding: 10px;
-		  border-radius: 8px;
-		}
-		label.highlight {
-		  font-weight: bold;
-		  margin-bottom: 0px;
-		  margin-left: 10px;
-		}
-		input.highlight {
-		  margin-right: 7px;
-		}
-		label#dataHighlighting {
-		  margin-left: 60px;
-		  margin-bottom: 0px;
-		}
 		div.gridContainer {
 		  display: none;
 		}
@@ -133,11 +121,6 @@
 		div.options {
 		  height: 90vh;
 		  position: relative;
-		}
-		div.highlight {
-		  position: absolute;
-		  width: 95%;
-		  bottom: 0;
 		}
 		span.selectOptions {
 		  position: absolute;
@@ -167,17 +150,39 @@
 		}
 		div.drawGrid {
 		  text-align: center;
-		  margin-top: 3vh;
+		  position: absolute;
+		  bottom: 3%;
+		  left: 20%;
+		  width: 60%;
 		}
 		button.drawGrid {
 		  width: 60%;
+		  display: none;
 		}
 		span.sortError {
 		  color: red;
 		  display: none;
 		}
-		input.highlight:hover {
+		.infoButton {
+			height: 20px;
+			color: #66a0ff;
+			/*opacity: 0.8;*/
+		}
+		.infoButton:hover {
 			cursor: pointer;
+			color: blue;
+		}
+		div.lowerP {
+			margin-top: 5px;
+		}
+		.percentileCheck:hover {
+			cursor: pointer;
+		}
+		.collapseButton:hover {
+			cursor: pointer;
+		}
+		label.dataHighlight {
+			margin-top: 15px;
 		}
 	</style>
 </head>
@@ -192,32 +197,34 @@
 		</div>
 		<div class="row mainBody">
 			<div class="col-md-9 gridInfo">
+				<h3 class="title">2017 US Census Data by Income</h3>
 				<div class="gridContainer">
 					<div id="vis"></div>
 				</div>
-				<span class="selectOptions">Upload a data file and select options on the right to view grid data.</span>
-				<div class="form-row highlight">
-					<label for="dataHighlighting" class="highlight">Data Highlighting Sections: </label>
-					<label class="radio-inline" id="dataHighlighting"><input type="radio" value="none" class="highlight" name="optradio" checked>None</label>
-					<label class="radio-inline" id="dataHighlighting"><input type="radio" value="belowPoverty" class="highlight" name="optradio">Below Poverty</label>
-					<label class="radio-inline" id="dataHighlighting"><input type="radio" value="belowMedian" class="highlight" name="optradio">Below Median Income</label>
+				<span class="selectOptions">Select options on the right to view grid data. You must select a category to sort by before you can view the grid.</span>
+				<div class="drawGrid">
+					<button type="button" class="btn btn-outline-success btn-lg drawGrid"  aria-haspopup="true" aria-expanded="false" onclick="showGrid()">
+						Draw Grid
+					</button>
 				</div>
 			</div>
 			<div class="col-md-3 options">
 				<span class="options title">Selected Options</span><br><br>
 				<div class="form-group">
 					<label for="exampleFormControlSelect1">Sort By</label>
-					<select class="form-control sortBy" id="exampleFormControlSelect1">
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select an option to sort by, this option will appear on the y-axis of the grid."></i>
+					<select class="form-control sortBy" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option>---</option>
-						<option>Marital Status</option>
-						<option>Race</option>
-						<option>Occupation</option>
+						<option value="marital">Marital Status</option>
+						<option value="race">Race</option>
+						<option value="occupation">Occupation</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="exampleFormControlSelect1">Marital Status</label>
-					<select class="form-control maritalStat" id="exampleFormControlSelect1">
-						<option>Show All</option>
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select which marital status information you would like included in the grid data."></i>
+					<select class="form-control maritalStat" onchange="lockForm();" id="exampleFormControlSelect1">
+						<option value="showAll">Show All</option>
 						<option>Single</option>
 						<option>Married</option>
 						<option>Widowed</option>
@@ -226,8 +233,9 @@
 				</div>
 				<div class="form-group">
 					<label for="exampleFormControlSelect1">Race</label>
-					<select class="form-control raceStat" id="exampleFormControlSelect1">
-						<option>Show All</option>
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select which racial information you would like included in the grid data."></i>
+					<select class="form-control raceStat" onchange="lockForm();" id="exampleFormControlSelect1">
+						<option value="showAll">Show All</option>
 						<option>White</option>
 						<option>Black</option>
 						<option>Asian</option>
@@ -236,8 +244,9 @@
 				</div>
 				<div class="form-group">
 					<label for="exampleFormControlSelect1">Occupation</label>
-					<select class="form-control occupationStat" id="exampleFormControlSelect1">
-						<option>Show All</option>
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select which occupation information you would like included in the grid data."></i>
+					<select class="form-control occupationStat" onchange="lockForm();" id="exampleFormControlSelect1">
+						<option value="showAll">Show All</option>
 						<option>Managers, Doctors, Lawyers</option>
 						<option>Other Professionals</option>
 						<option>Clerical and Sales</option>
@@ -249,40 +258,43 @@
 						<option>Other Not in Labor Force</option>
 					</select>
 				</div>
+				<i data-feather="chevron-down" role="button" aria-expanded="false" aria-controls=".percentileContainer" class="collapseButton" data-toggle="collapse" href=".percentileContainer" onclick="collapseP()" data-trigger="click"></i>
 				<span class="options percentile">Show Percentiles</span>
-				<form class="percentile">
-					<div class="form-row percentile">
-						<div class="col-sm-1">
-							<div class="form-check">
-  								<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<span>Lower Percentile</span>
-						</div>
-						<div class="col-sm-5">
-							<input type="text" class="form-control percentile">
-						</div>
+				<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If selected, data will be highlighted by the specified lower and upper percentiles."></i>
+				<div class="percentileContainer collapse">
+					<div class="input-group mb-3 lowerP">
+					  <div class="input-group-prepend">
+					    <div class="input-group-text">
+					      <input type="checkbox" class="percentileCheck"> 
+					    </div>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Lower Percentile">
 					</div>
-					<div class="form-row percentile">
-						<div class="col-sm-1">
-							<div class="form-check">
-  								<input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<span>Upper Percentile</span>
-						</div>
-						<div class="col-sm-5">
-							<input type="text" class="form-control percentile">
-						</div>
+					<div class="input-group mb-3 upperP">
+					  <div class="input-group-prepend">
+					    <div class="input-group-text">
+					      <input type="checkbox" class="percentileCheck"> 
+					    </div>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Upper Percentile">
 					</div>
-				</form>
-				<br>
-				<div class="drawGrid">
-					<button type="button" class="btn btn-outline-success btn-lg drawGrid"  aria-haspopup="true" aria-expanded="false" onclick="showGrid()">
-						Draw Grid
-					</button>
+				</div>
+				<div class="form-group dataHighlight">
+					<label class="dataHighlight" for="exampleFormControlSelect1">Data Highlighting Sections</label>
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Choose a section of the grid data to be highlighted."></i>
+					<select class="form-control dataHighlight" onchange="lockForm();" id="exampleFormControlSelect1">
+						<option value="none">None</option>
+						<option value="poverty">Below Poverty</option>
+						<option value="median">Below Median Income</option>
+					</select>
+				</div>
+				<div class="form-group dataScale">
+					<label class="dataScale" for="exampleFormControlSelect1">Data Scaling</label>
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Choose whether you want the data to be displayed on a linear or logarithmic scale."></i>
+					<select class="form-control dataScale" onchange="lockForm();" id="exampleFormControlSelect1">
+						<option value="logarithmic">Logarithmic</option>
+						<option value="linear">Linear</option>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -299,16 +311,19 @@
 	<!--------------------------------- XLSX Sourcecode ------------------------------------->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>  
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script> 
-	<!------------------------------------ Chart.js ----------------------------------------->
-	
+	<!------------------------------------ Feather Icons ----------------------------------------->
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 	<!--------------------------------------------------------------------------------------->
 	<script>
-		var gridStatus = {belowPoverty: false, belowMedian: false, sortBy: "---", maritalStatus: "Show All", race: "Show All", occupation: "Show All", dataImported: false, accessed: false};
+		var gridStatus = {belowPoverty: false, belowMedian: false, sortBy: "---", maritalStatus: "Show All", race: "Show All", occupation: "Show All", dataImported: false, accessed: false, linearGrid: false};
 		var poverty = ["$0-10k", "$10-20k"];
 		var median = ["$0-10k", "$10-20k", "$20-40k"];
 
 		$(document).ready(function() {
 			$("body").fadeIn(500);
+			feather.replace();
+			$('[data-toggle="popover"]').popover();
+
 		});
 
 		function importFile() {  
@@ -324,6 +339,7 @@
 		}
 
 		function showGrid() {
+			$("button.drawGrid").css("display", "none");
 			gridStatus.sortBy = $("select.sortBy").val();
 			if (gridStatus.sortBy == "---") {
 				$("div.gridContainer").css("display", "none");
@@ -337,6 +353,7 @@
 			}
 			else {
 				$("div.gridContainer").css("display", "inline");
+				$("h3.title").css("display", "block");
 				$("span.selectOptions").css("display", "none");
 				updateGridSettings();
 			}
@@ -353,12 +370,28 @@
 			return integer;
 		}
 
-		$("input[type=radio]").on("click", function() {
-			if ($(this).val() == "belowPoverty") {
+		function collapseP() {
+			// feather.replace({ "data-feather": "chevron-up"});
+		}
+
+		function lockForm() {
+			var optionSelect = $("select.sortBy").find(":selected").text();
+			var maritalStat = $("select.maritalStat");
+			var raceStat = $("select.raceStat");
+			var occupationStat = $("select.occupationStat");
+			var dataHighlight = $("select.dataHighlight").val();
+			var dataScale = $("select.dataScale").val();
+
+			if (dataScale == "linear")
+				gridStatus.linearGrid = true;
+			else
+				gridStatus.linearGrid = false;
+
+			if (dataHighlight == "poverty") {
 				gridStatus.belowPoverty = true;
 				gridStatus.belowMedian = false;
 			}
-			else if ($(this).val() == "belowMedian") {
+			else if (dataHighlight == "median") {
 				gridStatus.belowPoverty = false;
 				gridStatus.belowMedian = true;
 			}
@@ -366,21 +399,57 @@
 				gridStatus.belowPoverty = false;
 				gridStatus.belowMedian = false;
 			}
-		});
+
+			if (optionSelect == "Marital Status") {
+				maritalStat.prop("disabled", true);
+				maritalStat.css("cursor", "not-allowed");
+				maritalStat.val("showAll");
+				unlockForm("raceStat");
+				unlockForm("occupationStat");
+				$("button.drawGrid").css("display", "inline");
+			}
+			else if (optionSelect == "Race") {
+				raceStat.prop("disabled", true);
+				raceStat.css("cursor", "not-allowed");
+				raceStat.val("showAll");
+				unlockForm("maritalStat");
+				unlockForm("occupationStat");
+				$("button.drawGrid").css("display", "inline");
+			}
+			else if (optionSelect == "Occupation") {
+				occupationStat.prop("disabled", true);
+				occupationStat.css("cursor", "not-allowed");
+				occupationStat.val("showAll");
+				unlockForm("maritalStat");
+				unlockForm("raceStat");
+				$("button.drawGrid").css("display", "inline");
+			}
+			else {
+				unlockForm("maritalStat");
+				unlockForm("raceStat");
+				unlockForm("occupationStat");
+				$("button.drawGrid").css("display", "none");
+			}
+		}
+
+		function unlockForm(className) {
+			$("select." + className).prop("disabled", false);
+			$("select." + className).css("cursor", "pointer");
+		}
 
 		function updateGridSettings() {
 			gridStatus.maritalStatus = $("select.maritalStat").val();
 			gridStatus.race = $("select.raceStat").val();
 			gridStatus.occupation = $("select.occupationStat").val();
 			var fileName;
-			if (gridStatus.sortBy == "Marital Status") {
-				if (gridStatus.race == "Show All")
+			if (gridStatus.sortBy == "marital") {
+				if (gridStatus.race == "showAll")
 					fileName = "BothSex_AllRace.tsv";
 				else
 					fileName = "BothSex_" + gridStatus.race + "_Alone.tsv";
 			}
-			else if (gridStatus.sortBy == "Race") {
-				if (gridStatus.maritalStatus == "Show All")
+			else if (gridStatus.sortBy == "race") {
+				if (gridStatus.maritalStatus == "showAll")
 					fileName = "BothSex_AllRace_AllMarital.tsv";
 				else
 					fileName = "BothSex_AllRace_" + gridStatus.maritalStatus + ".tsv";
@@ -388,7 +457,7 @@
 			fillGrid(fileName);
 		}
 
-		// tsv loaded asynchronously
+		// Original source code: http://bl.ocks.org/officeofjane/7315455
 		function fillGrid(fileName) {
 
 		  d3.tsv("Data/tsv/" + fileName, type, function(data) {
@@ -396,22 +465,30 @@
 		    var gridWidth = $("div.gridInfo").width();
 		    var gridHeight = $("div.gridInfo").height();
 
-		    var margin = {top: 45, right: 30, bottom: 20, left: 110},
-		        width = gridWidth - margin.left - margin.right,
-		        height = 150 - margin.top - margin.bottom;
+		    var margin = {top: 20, right: 30, bottom: 10, left: 110},
+		        width = gridWidth - margin.left - margin.right - 20,
+		        height = 120 - margin.top - margin.bottom;
 
-		    var formattotal = d3.format(".0%");
+		    var formattotal = d3.format(".1s");
 
 		    var color = d3.scale.linear()
 		              .range(["#bad5e5","#8cbcd7","#5fa3ca","#328abd","#0571b0"])
 		              .domain([0,1000,4000,7000,10000]);
 
 		    var x = d3.scale.ordinal()
-		        .rangeRoundBands([0, width], .1);
+		        .rangeRoundBands([0, width], 0);
 
 		    // Scales. Note the inverted domain fo y-scale: bigger is up!
-		    var y = d3.scale.sqrt()
-		        .range([80, 60]);
+		    if (gridStatus.linearGrid) {
+		    	var y = d3.scale.linear()
+		    		.range([100, 0]);
+		    }
+		    else {
+		    	var y = d3.scale.log()
+		    		.range([200, 0])
+		    		.base(10);
+		    }
+		    
 
 		    var xAxis = d3.svg.axis()
 		        .scale(x)
@@ -439,9 +516,18 @@
 		        .key(function(d) { return d.characteristic; })
 		        .entries(data);
 
+		    var maxVal = d3.max(countries, function(s) { 
+		    	var max = 0;
+		    	for(var i=0; i<s.values.length; i++) {
+		    		if (s.values[i].total > max)
+		    			max = s.values[i].total;
+		    	}
+		    	return max; 
+		    });
+
 		    // Compute the minimum and maximum income and total across symbols.
 		    x.domain(data.map(function(d) { return d.income; }));
-		    y.domain([0, d3.max(countries, function(s) { return s.values[0].total; })]);
+		    y.domain([1, maxVal]);
 
 		    // Add an SVG element for each marital status, with the desired dimensions and margin.
 
@@ -453,7 +539,7 @@
 				.enter()
 				.append("svg:svg")
 				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
+				.attr("height", height + 30  + margin.top + margin.bottom)
 				.append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -464,13 +550,22 @@
 			  .attr("transform", "translate(0," + height + ")")
 			  .call(xAxis);
 
+			// svg.append("g")
+			// 	.attr("class", "y axis")
+			// 	.attr("font-family", "sans-serif")
+			// 	.attr("font-size", "10px")
+			// 	.attr("transform", "translate(0," + -50 + ")")
+			// 	.attr("height", 75)
+			// 	.call(yAxis);
+
 			svg.append("g")
-			  // Hide y axis
 			  // .attr("class", "y axis")
+			  // .attr("transform", "translate(0," + height + ")")
+			  // .attr("font-size", "10px")
 			  // .call(yAxis)
 			.append("text")
 			.attr("x", -110)
-			.attr("y", height/2)
+			.attr("y", height/5)
 			.attr("dy", ".71em")
 			.attr("text-anchor", "start")
 			.attr("font-family", "sans-serif")
@@ -488,7 +583,13 @@
 			  .attr("x", function(d) { return x(d.income); })
 			  .attr("width", x.rangeBand())
 			  .attr("y", function(d) { return y(d.total); })
-			  .attr("height", function(d) { return height - y(d.total); })
+			  .attr("height", function(d) { 
+			  	if ((height - y(d.total)) < 0)
+			  		return "0";
+			  	else {
+			  		return height - y(d.total); 
+			  	}
+			  })
 			  .attr("fill", function(d) {return color(d.total)})
 			  .attr("fill-opacity", function(d) {
 			  	if (gridStatus.belowPoverty && poverty.includes(d.income))
@@ -503,6 +604,19 @@
 			  .on('mouseover', tip.show)
 			  .on('mouseout', tip.hide)
 			  svg.call(tip);
+
+			svg.selectAll(".outline")
+				.data(function(d) {return d.values;})
+				.enter()
+				.append("rect")
+				.attr("class", "outline")
+				.attr("x", function(d) { return x(d.income); })
+				.attr("width", x.rangeBand())
+				.attr("y", height - x.rangeBand())
+				.attr("height", x.rangeBand())
+				.attr("fill", "none")
+				.attr("stroke", "black")
+				.style("stroke-width", 0.5);
 
 		  });
 		}
