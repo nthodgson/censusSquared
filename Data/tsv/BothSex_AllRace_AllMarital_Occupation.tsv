@@ -1,0 +1,50 @@
+characteristic	income	total	
+Managers, Doctors, Lawyers	$0-10k	0
+Managers, Doctors, Lawyers	$10-20k	0
+Managers, Doctors, Lawyers	$20-40k	456
+Managers, Doctors, Lawyers	$40-60k	4974
+Managers, Doctors, Lawyers	$60-80k	6897
+Managers, Doctors, Lawyers	$80-100k	5989
+Managers, Doctors, Lawyers	$100k+	4118
+Other Professionals	$0-10k	0
+Other Professionals	$10-20k	0
+Other Professionals	$20-40k	3268
+Other Professionals	$40-60k	9617
+Other Professionals	$60-80k	6774
+Other Professionals	$80-100k	4207
+Other Professionals	$100k+	1780
+Technicians, Associate Professionals	$0-10k	0
+Technicians, Associate Professionals	$10-20k	0
+Technicians, Associate Professionals	$20-40k	911
+Technicians, Associate Professionals	$40-60k	2532
+Technicians, Associate Professionals	$60-80k	539
+Technicians, Associate Professionals	$80-100k	3
+Technicians, Associate Professionals	$100k+	0
+Clerical and Sales	$0-10k	0
+Clerical and Sales	$10-20k	0
+Clerical and Sales	$20-40k	12531
+Clerical and Sales	$40-60k	7287
+Clerical and Sales	$60-80k	3696
+Clerical and Sales	$80-100k	204
+Clerical and Sales	$100k+	35
+Skilled Blue Collar	$0-10k	0
+Skilled Blue Collar	$10-20k	0
+Skilled Blue Collar	$20-40k	17829
+Skilled Blue Collar	$40-60k	40258
+Skilled Blue Collar	$60-80k	2335
+Skilled Blue Collar	$80-100k	46
+Skilled Blue Collar	$100k+	0
+Less Skilled Blue Collar	$0-10k	0
+Less Skilled Blue Collar	$10-20k	0
+Less Skilled Blue Collar	$20-40k	13509
+Less Skilled Blue Collar	$40-60k	5040
+Less Skilled Blue Collar	$60-80k	924
+Less Skilled Blue Collar	$80-100k	68
+Less Skilled Blue Collar	$100k+	0
+Farmers	$0-10k	0
+Farmers	$10-20k	0
+Farmers	$20-40k	580
+Farmers	$40-60k	6056
+Farmers	$60-80k	731
+Farmers	$80-100k	0
+Farmers	$100k+	0
