@@ -15,7 +15,7 @@ Using a customizable user interface, this web app allows people to visualize and
 
 ### Execution Specifications
 
-To run locally: 
+To run locally, execute the following code in the censusSquared directory, then open "index.html": 
 
 ```shell
 python -m http.server
