@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!--------------- Stylesheet Links -------------------->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
+	<!--------------- jQuery Sortable -------------------->
+	<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
 	<!--<link rel="stylesheet" href="css/style.css">-->
 	<!----------------------------------------------------->
 	<title>Census²</title>
@@ -152,7 +154,7 @@
 		div.drawGrid {
 		  text-align: center;
 		  position: absolute;
-		  bottom: 3%;
+		  bottom: 5%;
 		  left: 20%;
 		  width: 60%;
 		}
@@ -182,9 +184,23 @@
 		.collapseButton:hover {
 			cursor: pointer;
 		}
-		label.dataHighlight {
-			margin-top: 15px;
+		label.optionLabel {
+			font-family: sans-serif;
 		}
+		#vis {
+			list-style-type: none;
+		}
+		.default {
+            /*border: 1px solid #DDDDDD;
+            color: #333333;*/
+         }
+		/*.placeholder {
+		   background: #f3f3f3;
+		   visibility: visible;
+		   height: 100px;
+		   width: 1000px;
+		   border: 1px solid red;
+		}*/
 	</style>
 </head>
 <body>
@@ -206,9 +222,9 @@
 			<div class="col-md-3 options">
 				<span class="options title">Selected Options</span><br><br>
 				<div class="form-group">
-					<label for="exampleFormControlSelect1">Sort By</label>
+					<label class="optionLabel" for="exampleFormControlSelect1">Sort By</label>
 					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select an option to sort by, this option will appear on the y-axis of the grid."></i>
-					<select class="form-control sortBy" onchange="lockForm();" id="exampleFormControlSelect1">
+					<select class="form-control form-control-sm sortBy" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option>---</option>
 						<option value="marital">Marital Status</option>
 						<option value="race">Race</option>
@@ -216,9 +232,9 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="exampleFormControlSelect1">Marital Status</label>
+					<label class="optionLabel" for="exampleFormControlSelect1">Marital Status</label>
 					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select which marital status information you would like included in the grid data."></i>
-					<select class="form-control maritalStat" onchange="lockForm();" id="exampleFormControlSelect1">
+					<select class="form-control form-control-sm maritalStat" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option value="showAll">Show All</option>
 						<option>Single</option>
 						<option>Married</option>
@@ -227,9 +243,9 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="exampleFormControlSelect1">Race</label>
+					<label class="optionLabel" for="exampleFormControlSelect1">Race</label>
 					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select which racial information you would like included in the grid data."></i>
-					<select class="form-control raceStat" onchange="lockForm();" id="exampleFormControlSelect1">
+					<select class="form-control form-control-sm raceStat" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option value="showAll">Show All</option>
 						<option>White</option>
 						<option>Black</option>
@@ -238,9 +254,9 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="exampleFormControlSelect1">Occupation</label>
+					<label class="optionLabel" for="exampleFormControlSelect1">Occupation</label>
 					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select which occupation information you would like included in the grid data."></i>
-					<select class="form-control occupationStat" onchange="lockForm();" id="exampleFormControlSelect1">
+					<select class="form-control form-control-sm occupationStat" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option value="showAll">Show All</option>
 						<option>Managers, Doctors, Lawyers</option>
 						<option>Other Professionals</option>
@@ -253,40 +269,29 @@
 						<option>Other Not in Labor Force</option>
 					</select>
 				</div>
-				<i data-feather="chevron-down" role="button" aria-expanded="false" aria-controls=".percentileContainer" class="collapseButton" data-toggle="collapse" href=".percentileContainer" onclick="collapseP()" data-trigger="click"></i>
-				<span class="options percentile">Show Percentiles</span>
-				<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If selected, data will be highlighted by the specified lower and upper percentiles."></i>
-				<div class="percentileContainer collapse">
-					<div class="input-group mb-3 lowerP">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					      <input type="checkbox" class="percentileCheck"> 
-					    </div>
-					  </div>
-					  <input type="text" class="form-control" placeholder="Lower Percentile">
-					</div>
-					<div class="input-group mb-3 upperP">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					      <input type="checkbox" class="percentileCheck"> 
-					    </div>
-					  </div>
-					  <input type="text" class="form-control" placeholder="Upper Percentile">
-					</div>
+				<!-- <i data-feather="chevron-down" role="button" aria-expanded="false" aria-controls=".percentileContainer" class="collapseButton" data-toggle="collapse" href=".percentileContainer" onclick="collapseP()" data-trigger="click"></i> -->
+				<div class="form-group">
+					<label class="optionLabel" for="exampleFormControlSelect1">Data Representation</label>
+					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Raw Numbers displays data by number of people in each category. Percentile displays the percentage of people in each income range by category (ex: Single), or by the total."></i>
+					<select class="form-control form-control-sm dataDisplay" onchange="lockForm();" id="exampleFormControlSelect1">
+						<option value="rawNumbers">Raw Numbers</option>
+						<option value="gridPercentile">Percentile by Category</option>
+						<option value="totalPercentile">Percentile by Total</option>
+					</select>
 				</div>
 				<div class="form-group dataHighlight">
-					<label class="dataHighlight" for="exampleFormControlSelect1">Data Highlighting Sections</label>
+					<label class="dataHighlight optionLabel" for="exampleFormControlSelect1">Data Highlighting Sections</label>
 					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Choose a section of the grid data to be highlighted."></i>
-					<select class="form-control dataHighlight" onchange="lockForm();" id="exampleFormControlSelect1">
+					<select class="form-control form-control-sm dataHighlight" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option value="none">None</option>
 						<option value="poverty">Below Poverty</option>
 						<option value="median">Below Median Income</option>
 					</select>
 				</div>
 				<div class="form-group dataScale">
-					<label class="dataScale" for="exampleFormControlSelect1">Data Scaling</label>
+					<label class="dataScale optionLabel" for="exampleFormControlSelect1">Data Scaling</label>
 					<i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Choose whether you want the data to be displayed on a linear or logarithmic scale."></i>
-					<select class="form-control dataScale" onchange="lockForm();" id="exampleFormControlSelect1">
+					<select class="form-control form-control-sm dataScale" onchange="lockForm();" id="exampleFormControlSelect1">
 						<option value="logarithmic">Logarithmic</option>
 						<option value="linear">Linear</option>
 					</select>
@@ -308,6 +313,8 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<!--------------------------------- jQuery Sortable ------------------------------------->
+	<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<!--------------------------------- XLSX Sourcecode ------------------------------------->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>  
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script> 
@@ -315,7 +322,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 	<!--------------------------------------------------------------------------------------->
 	<script>
-		var gridStatus = {belowPoverty: false, belowMedian: false, sortBy: "---", maritalStatus: "Show All", race: "Show All", occupation: "Show All", dataImported: false, accessed: false, linearGrid: false, percentiles: false};
+		var gridStatus = {belowPoverty: false, belowMedian: false, sortBy: "---", maritalStatus: "Show All", race: "Show All", occupation: "Show All", dataImported: false, accessed: false, linearGrid: false, gridPercent: false, totalPercent: false};
 		var poverty = ["$0-10k", "$10-20k"];
 		var median = ["$0-10k", "$10-20k", "$20-40k"];
 
@@ -323,7 +330,6 @@
 			$("body").fadeIn(500);
 			feather.replace();
 			$('[data-toggle="popover"]').popover();
-
 		});
 
 		function importFile() {  
@@ -381,11 +387,30 @@
 			var occupationStat = $("select.occupationStat");
 			var dataHighlight = $("select.dataHighlight").val();
 			var dataScale = $("select.dataScale").val();
+			var percentile = $("select.dataDisplay").val();
 
 			if (dataScale == "linear")
 				gridStatus.linearGrid = true;
 			else
 				gridStatus.linearGrid = false;
+
+			if (percentile == "rawNumbers") {
+				gridStatus.gridPercent = false;
+				gridStatus.totalPercent = false;
+				unlockForm("dataScale");
+			}
+			else if (percentile == "gridPercentile") {
+				gridStatus.gridPercent = true;
+				gridStatus.totalPercent = false;
+				$("select.dataScale").prop("disabled", true);
+				$("select.dataScale").css("cursor", "not-allowed");
+			}
+			else {
+				gridStatus.gridPercent = false;
+				gridStatus.totalPercent = true;
+				$("select.dataScale").prop("disabled", true);
+				$("select.dataScale").css("cursor", "not-allowed");
+			}
 
 			if (dataHighlight == "poverty") {
 				gridStatus.belowPoverty = true;
@@ -404,24 +429,32 @@
 				maritalStat.prop("disabled", true);
 				maritalStat.css("cursor", "not-allowed");
 				maritalStat.val("showAll");
+				occupationStat.prop("disabled", true);
+				occupationStat.css("cursor", "not-allowed");
+				occupationStat.val("showAll");
 				unlockForm("raceStat");
-				unlockForm("occupationStat");
 				$("button.drawGrid").css("display", "inline");
 			}
 			else if (optionSelect == "Race") {
 				raceStat.prop("disabled", true);
 				raceStat.css("cursor", "not-allowed");
 				raceStat.val("showAll");
+				occupationStat.prop("disabled", true);
+				occupationStat.css("cursor", "not-allowed");
+				occupationStat.val("showAll");
 				unlockForm("maritalStat");
-				unlockForm("occupationStat");
 				$("button.drawGrid").css("display", "inline");
 			}
 			else if (optionSelect == "Occupation") {
 				occupationStat.prop("disabled", true);
 				occupationStat.css("cursor", "not-allowed");
 				occupationStat.val("showAll");
-				unlockForm("maritalStat");
-				unlockForm("raceStat");
+				maritalStat.prop("disabled", true);
+				maritalStat.css("cursor", "not-allowed");
+				maritalStat.val("showAll");
+				raceStat.prop("disabled", true);
+				raceStat.css("cursor", "not-allowed");
+				raceStat.val("showAll");
 				$("button.drawGrid").css("display", "inline");
 			}
 			else {
@@ -469,7 +502,7 @@
 		    var gridWidth = $("div.gridInfo").width();
 		    var gridHeight = $("div.gridInfo").height();
 
-		    var margin = {top: 20, right: 10, bottom: 10, left: 180},
+		    var margin = {top: 30, right: 10, bottom: 20, left: 180},
 		        width = gridWidth - margin.left - margin.right - 20,
 		        height = gridHeight/6 - margin.top - margin.bottom;
 
@@ -483,8 +516,14 @@
 		    // Use the maximum value stored in maxVal to determine the upper and lower range of the domain.
 		    x.domain(data.map(function(d) { return d.income; }));
 
-		    // Scales. Note the inverted domain fo y-scale: bigger is up!
-		    if (gridStatus.linearGrid) {
+		    // Scales. Note the inverted domain for y-scale: bigger is up!
+		    
+		    if (gridStatus.gridPercent || gridStatus.totalPercent) {
+		    	var formattotal = d3.format("%");
+		    	var y = d3.scale.linear()
+		    		.range([x.rangeBand(), 0]);
+		    }
+		    else if (gridStatus.linearGrid) {
 		    	var formattotal = d3.format("s");
 		    	var y = d3.scale.linear()
 		    		.range([x.rangeBand(), 0]);
@@ -502,18 +541,6 @@
 		        .ticks(5)
 		        .tickSize(8, 0)
 		        .tickFormat(formattotal);
-
-		    var tip = d3.tip()
-		      .attr('class', 'd3-tip')
-		      .offset([-10, 0])
-		      .html(function(d) {
-		        if (d.total == 0)
-		        	return "<strong>0</strong>"
-		      	else if ((d.total).toString().length <= 3)
-		      		return "<strong>" + d.total + "k</strong>";
-		        else
-		          return "<strong>" + ((d.total).toFixed(1)/1000).toFixed(2) + "M</strong>";
-		      })
 
 		    // Data is nested by characteristic
 		    var characteristics = d3.nest()
@@ -539,50 +566,98 @@
 		    	return max; 
 		    });
 
+		    j = 0;
+
+		    var sumTotal = d3.sum(characteristics, function(s) {
+		    	var sum = 0;
+		    	for (var i=0; i<s.values.length; i++) {
+		    		sum += s.values[i].total;
+		    	}
+		    	return sum;
+		    });
+
+		    var maxPercent = d3.max(characteristics, function(s) { 
+		    	var max = 0;
+		    	for(var i=0; i<s.values.length; i++) {
+		    		if (gridStatus.gridPercent) {
+		    			if ((s.values[i].total / totalNum[j]) > max)
+		    				max = (s.values[i].total / totalNum[j]);
+		    		}
+		    		else {
+		    			if ((s.values[i].total / sumTotal) > max)
+		    				max = (s.values[i].total / sumTotal);
+		    		}
+		    	}
+		    	j++;
+		    	return max; 
+		    });
+
 		    maxVal *= 1000;
 
 		    // Use maxVal to determine appropriate color range.
-		    var color = d3.scale.linear()
-		              .range(["#bad5e5","#8cbcd7","#5fa3ca","#328abd","#0571b0"])
-		              .domain([0,maxVal*0.2,maxVal*0.4,maxVal*0.6,maxVal*0.8]);
+		    if (gridStatus.gridPercent || gridStatus.totalPercent) {
+		    	var color = d3.scale.linear()
+		    				.range(["#bad5e5","#8cbcd7","#5fa3ca","#328abd","#0571b0"])
+		    				.domain([0,maxPercent*0.2,maxPercent*0.4,maxPercent*0.6,maxPercent*0.8]);
+		    }
+		    else {
+			    var color = d3.scale.linear()
+			              .range(["#bad5e5","#8cbcd7","#5fa3ca","#328abd","#0571b0"])
+			              .domain([0,maxVal*0.2,maxVal*0.4,maxVal*0.6,maxVal*0.8]);
+			}
 
 
-		    if (gridStatus.percentiles)
-		    	y.domain([0, 1]);
+		    if (gridStatus.gridPercent || gridStatus.totalPercent)
+		    	y.domain([0, maxPercent*1.05]);
 		    else if (gridStatus.linearGrid)
 		    	y.domain([0, maxVal*1.05]);
 		    else
 		    	y.domain([Math.exp(Math.log(maxVal) - 5), Math.exp(Math.log(maxVal) + 0.5)]);
+
+		    // Tooltip displaying number of people or percentage when hovered over.
+		    var tip = d3.tip()
+		      .attr('class', 'd3-tip')
+		      .offset([-10, 0])
+		      .html(function(d, i) {
+		      	if (gridStatus.gridPercent) {
+		      		return "<strong>" + ((d.total/d3.select(this).attr("id"))*100).toFixed(1) + "%</strong>";
+		      	}
+		      	else if (gridStatus.totalPercent) {
+		      		return "<strong>" + ((d.total/sumTotal)*100).toFixed(1) + "%</strong>";
+		      	}
+		      	else {
+					if (d.total == 0)
+						return "<strong>0</strong>"
+					else if ((d.total).toString().length <= 3)
+						return "<strong>" + d.total + "k</strong>";
+					else
+						return "<strong>" + ((d.total).toFixed(1)/1000).toFixed(2) + "M</strong>";
+		      	}
+		      });
 
 		    // Remove previous SVG element in order to update to new grid data and settings.
 		    var svg = d3.select("#vis").selectAll("svg");
 		    	svg.remove();
 
 		    // Add an SVG element for each characteristic, with the desired dimensions and margin.
-
 			svg = d3.select("#vis").selectAll("svg")
 				.data(characteristics)
 				.enter()
 				.append("svg:svg")
 				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + 30  + margin.top + margin.bottom)
+				.attr("height", x.rangeBand() + margin.top + margin.bottom)
+				.style("cursor", "grab")
+				.style("display", "inline-block")
+				.attr("class", "default")
 				.append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 			svg.append("g")
-			  .attr("class", "x axis")
-			  .attr("font-family", "sans-serif")
-			  .attr("font-size", "12px")
-			  .attr("transform", "translate(0," + x.rangeBand() + ")")
-			  .call(xAxis);
-
-			// svg.append("g")
-			// 	.attr("class", "y axis")
-			// 	.attr("font-family", "sans-serif")
-			// 	.attr("font-size", "10px")
-			// 	.attr("transform", "translate(0," + -50 + ")")
-			// 	.attr("height", 75)
-			// 	.call(yAxis);
+				.attr("class", "x axis")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "12px")
+				.attr("transform", "translate(0," + x.rangeBand() + ")")
+				.call(xAxis);
 
 			svg.append("g")
 				.attr("class", "y axis")
@@ -605,35 +680,50 @@
 			// Accessing nested data: https://groups.google.com/forum/#!topic/d3-js/kummm9mS4EA
 			// data(function(d) {return d.values;}) 
 			// this will dereference the values for nested data for each group
-			var n = 0;
+			var id = 0;
 
 			svg.selectAll(".bar")
 			  .data(function(d) {return d.values;})
 			  .enter()
 			  .append("rect")
+			  .style("cursor", "pointer")
 			  .attr("class", "bar")
 			  .attr("x", function(d) { return x(d.income); })
 			  .attr("width", x.rangeBand())
-			  .attr("y", function(d) { 
-			  	if (gridStatus.percentiles) {
-			  		yAxis.tickFormat(d3.format("%"));
-			  		console.log(d.total/totalNum[n]);
-			  		return y(d.total/totalNum[n]);
+			  .attr("id", function(d, i) {
+			  	if (i < 6)
+			  		return totalNum[id];
+			  	else {
+			  		id++;
+			  		return totalNum[id-1];
 			  	}
+			  })
+			  .attr("y", function(d) { 
+			  	if (gridStatus.gridPercent)
+			  		return y(d.total/d3.select(this).attr("id"));
+			  	else if (gridStatus.totalPercent)
+			  		return y(d.total/sumTotal);
 			  	else
 			  		return y(d.total*1000); 
 			  })
 			  .attr("height", function(d) { 
-			  	if (gridStatus.percentiles) {
-			  		return x.rangeBand() - y(d.total/totalNum[n]);
-			  	}
+			  	if (gridStatus.gridPercent) 
+			  		return x.rangeBand() - y(d.total/d3.select(this).attr("id"));
+			  	else if (gridStatus.totalPercent)
+			  		return x.rangeBand() - y(d.total/sumTotal);
 			  	else if ((x.rangeBand() - y(d.total*1000)) < 0)
 			  		return 0;
 			  	else
 			  		return x.rangeBand() - y(d.total*1000);
-			  	n++;
 			  })
-			  .attr("fill", function(d) {return color(d.total*1000)})
+			  .attr("fill", function(d) {
+			  	if (gridStatus.gridPercent)
+			  		return color(d.total/d3.select(this).attr("id"));
+			  	else if (gridStatus.totalPercent)
+			  		return color(d.total/sumTotal);
+			  	else 
+			  		return color(d.total*1000)
+			  })
 			  .attr("fill-opacity", function(d) {
 			  	if (gridStatus.belowPoverty && poverty.includes(d.income))
 			  		return "1";
@@ -647,6 +737,8 @@
 			  .on('mouseover', tip.show)
 			  .on('mouseout', tip.hide)
 			  svg.call(tip);
+
+
 
 			svg.selectAll(".outline")
 				.data(function(d) {return d.values;})
@@ -665,6 +757,16 @@
 				// 		return tip.show;
 				// })
 
+			$("#vis").sortable({
+				refreshPositions: true,
+			    opacity: 0.6,
+			    scroll: true,
+			    placeholder: 'placeholder',
+			    forcePlaceholderSize: true,
+			    cursor: 'grabbing',
+			    tolerance: 'pointer'
+			});
+			
 
 		  });
 		}
