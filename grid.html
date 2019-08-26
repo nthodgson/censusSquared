@@ -308,7 +308,6 @@
 	<!-------------- Latest D3 source code --------------->
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.min.js"></script>
-	<!--<script src="js/d3_script.js"></script>-->
 	<!-------------------------- Bootstrap Javascript and JQuery ---------------------------------------->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -635,7 +634,7 @@
 		      	}
 		      });
 
-		    // Remove previous SVG element in order to update to new grid data and settings.
+		    // Remove previous SVG elements in order to update to new grid data and settings.
 		    var svg = d3.select("#vis").selectAll("svg");
 		    	svg.remove();
 
@@ -678,7 +677,7 @@
 
 
 			// Accessing nested data: https://groups.google.com/forum/#!topic/d3-js/kummm9mS4EA
-			// data(function(d) {return d.values;}) 
+			// data(function(d) {return d.values;}) s
 			// this will dereference the values for nested data for each group
 			var id = 0;
 
@@ -738,8 +737,6 @@
 			  .on('mouseout', tip.hide)
 			  svg.call(tip);
 
-
-
 			svg.selectAll(".outline")
 				.data(function(d) {return d.values;})
 				.enter()
@@ -752,10 +749,6 @@
 				.attr("fill", "none")
 				.attr("stroke", "black")
 				.style("stroke-width", 0.5);
-				// .on('mouseover', function(d) {
-				// 	if (d.total < 200)
-				// 		return tip.show;
-				// })
 
 			$("#vis").sortable({
 				refreshPositions: true,
