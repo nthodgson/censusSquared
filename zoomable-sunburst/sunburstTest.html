@@ -67,7 +67,7 @@
     padding-right: 40px;
   }
   button.settings {
-    width: 150px;
+    width: 100%;
   }
   label.optionLabel {
     font-family: sans-serif;
@@ -82,67 +82,95 @@
     cursor: pointer;
     color: blue;
   }
+  div#dualChartToggle {
+    margin-left: 20px;
+    margin-top: 7px;
+  }
+  span#dualChartToggle {
+    font-size: 15px;
+    font-family: sans-serif;
+  }
+  div.buttonContainer {
+    float: right;
+    width: 10%;
+  }
+  div.sequenceContainer {
+    margin-bottom: 5%;
+  }
 
 </style>
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-6">
-        <div id="visSequence"></div>
-        <div id="vis"></div>
-      </div>
-      <div class="col-lg-6">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary settings" data-toggle="modal" data-target="#exampleModalCenter">
-          <i data-feather="settings" class="settings"></i>
-          Settings
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Update Chart Settings</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <label class="optionLabel" for="exampleFormControlSelect1">Sort By</label>
-                  <i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select an option to sort by, this option will appear on the y-axis of the grid."></i>
-                  <select class="form-control form-control-sm sortBy" id="exampleFormControlSelect1">
-                    <option value="race">Race</option>
-                    <option value="marital">Marital Status</option>
-                    <option value="occupation">Occupation</option>
-                  </select>
+      <div class="col-lg-12">
+        <div class="buttonContainer">
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary settings" data-toggle="modal" data-target="#exampleModalCenter">
+            <i data-feather="settings" class="settings"></i>
+            Settings
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Update Chart Settings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-                <div class="form-group">
-                  <label class="optionLabel" for="exampleFormControlSelect1">Data Representation</label>
-                  <i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Raw Numbers displays data by number of people in each category. Percentile displays the percentage of people in each income range by category (ex: Single), or by the total."></i>
-                  <select class="form-control form-control-sm dataDisplay" id="exampleFormControlSelect1">
-                    <option value="rawNumbers">Raw Numbers</option>
-                    <option value="percentiles">Percentiles</option>
-                  </select>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label class="optionLabel" for="exampleFormControlSelect1">Sort By</label>
+                    <i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Select an option to sort by, this option will appear on the y-axis of the grid."></i>
+                    <select class="form-control form-control-sm sortBy" id="exampleFormControlSelect1">
+                      <option value="race">Race</option>
+                      <option value="marital">Marital Status</option>
+                      <option value="occupation">Occupation</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="optionLabel" for="exampleFormControlSelect1">Data Representation</label>
+                    <i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Raw Numbers displays data by number of people in each category. Percentile displays the percentage of people in each income range by category (ex: Single), or by the total."></i>
+                    <select class="form-control form-control-sm dataDisplay" id="exampleFormControlSelect1">
+                      <option value="rawNumbers">Raw Numbers</option>
+                      <option value="percentiles">Percentiles</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="optionLabel" for="exampleFormControlSelect1">Partition By</label>
+                    <i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Raw Numbers displays data by number of people in each category. Percentile displays the percentage of people in each income range by category (ex: Single), or by the total."></i>
+                    <select class="form-control form-control-sm partitionBy" id="exampleFormControlSelect1">
+                      <option value="size">Size</option>
+                      <option value="category">Category</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <span id="dualChartToggle">Dual Chart</span>
+                    <div id="dualChartToggle" class="checkbox">
+                      <label>
+                        <input class="dualChartToggle" type="checkbox" data-toggle="toggle">
+                      </label>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label class="optionLabel" for="exampleFormControlSelect1">Partition By</label>
-                  <i data-feather="info" class="infoButton" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Raw Numbers displays data by number of people in each category. Percentile displays the percentage of people in each income range by category (ex: Single), or by the total."></i>
-                  <select class="form-control form-control-sm partitionBy" id="exampleFormControlSelect1">
-                    <option value="size">Size</option>
-                    <option value="category">Category</option>
-                  </select>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-success" id="saveChanges">Save changes</button>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="saveChanges">Save changes</button>
               </div>
             </div>
           </div>
         </div>
-        <div id="secondSequence"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="sequenceContainer" id="visSequence"></div>
+        <div id="vis"></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="sequenceContainer" id="secondSequence"></div>
         <div id="secondChart"></div>
       </div>
     </div>
@@ -167,7 +195,7 @@
       //$("body").fadeIn(500);
       feather.replace();
       drawChart("vis", "visSequence");
-      // drawChart("secondChart", "secondSequence");
+      $('input.dualChartToggle').bootstrapToggle();
     });
 
   $(function() {
@@ -178,6 +206,7 @@
     var sortBy = $("select.sortBy").val();
     var dataDisplay = $("select.dataDisplay").val();
     var partitionBy = $("select.partitionBy").val();
+    var dualChart = $("input.dualChartToggle");
 
     if (sortBy == "race") {
       chartSettings.filename = "race.json";
@@ -201,12 +230,23 @@
     else
       chartSettings.partition = false;
 
+    if (dualChart.prop('checked') && !chartSettings.dualChart) {
+      chartSettings.dualChart = true;
+      drawChart("secondChart", "secondSequence");
+    }
+    else if (dualChart.prop('checked') && chartSettings.dualChart) 
+      updateData("secondChartsvg", "secondSequence");
+    else {
+      chartSettings.dualChart = false;
+      deleteChart("secondChart");
+    }
+
     $(".modal").modal("hide");
-    updateData("visSequence");
+    updateData("vissvg", "visSequence");
   });
 
   // Default chart settings struct
-  var chartSettings = { race: true, marital: false, occupation: false, percentiles: false, filename: "race.json", sum: 0, width: 550, dualChart: false, partitionSize: false };
+  var chartSettings = { race: true, marital: false, occupation: false, percentiles: false, filename: "race.json", sum: 0, width: 550, dualChart: false, partitionSize: true};
 
   // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
   var b = {
@@ -226,9 +266,9 @@
 
       d3.json("data/" + chartSettings.filename).then(function(data) {
 
-          var root = d3.hierarchy(data)
-              .sum(function(d) { return d.value; })
-              .sort(function(a, b) { return b.value - a.value; });
+        var root = d3.hierarchy(data)
+            .sum(function(d) { return d.value; })
+            .sort(function(a, b) { return b.value - a.value; });
         
         root = d3.partition().size([2 * Math.PI, root.height + 1])(root);
 
@@ -250,7 +290,7 @@
         });
 
         var svg = d3.select("#" + id).append("svg")
-          .attr("viewBox", [0, 0, 700, 700])
+          .attr("viewBox", [-50, 0, 700, 700])
           .attr("id", (id + "svg"))
           .style("font", "11px sans-serif");
 
@@ -277,12 +317,12 @@
             .attr("fill-rule", "evenodd")
             .attr("stroke", function(d) {
               if (d3.select(this).attr("fill-opacity") > 0) {
-                return "none";
+                return "white";
               }
               else
                 return "none";
             })
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 0.5)
             .attr("d", function(d) {
               return arc(d.current);
             })
@@ -310,7 +350,12 @@
             .attr("id", "label")
             .attr("fill-opacity", d => +labelVisible(d.current))
             .attr("transform", d => labelTransform(d.current, radius))
-            .text(d => d.data.name);
+            .text(function(d) {
+              if (chartSettings.filename == "occupation.json")
+                return abbreviate(d.data.name);
+              else
+                return d.data.name;
+            });
 
         var parent = g.append("circle")
           .datum(root)
@@ -363,7 +408,15 @@
       });
   }
 
-  function updateData(sequenceID) {
+  function deleteChart(id, sequenceID) {
+    var svg = d3.select('#' + id);
+    svg.selectAll("*").remove();
+
+    var trail = d3.select('#' + sequenceID);
+    trail.selectAll("*").remove();
+  }
+
+  function updateData(id, sequenceID) {
     d3.json("data/" + chartSettings.filename).then(function(data) {
 
       if (chartSettings.partitionSize) {
@@ -373,14 +426,18 @@
       }
       else {
         var root = d3.hierarchy(data)
-            .sum(function(d) { return d.value; });
+            .sum(function(d) { return d.value; })
+            .sort(function(a, b) { return a.value - b.value; });
+
       }
 
       root = d3.partition().size([2 * Math.PI, root.height + 1])(root);
 
+      chartSettings.sum = 0; // reset sum
+
       root.each(function(d) { // get sum of all values
         if (d.value > chartSettings.sum)
-          chartSettings.sum = d.value;
+          chartSettings.sum += d.value;
         return d.current = d;
       });
 
@@ -396,7 +453,7 @@
 
       var color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length +1));
 
-      var svg = d3.select("#vis");
+      var svg = d3.select("#" + id);
 
       var g = svg.select("g");
 
@@ -413,11 +470,12 @@
             .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
             .attr("stroke", function(d) {
               if (d3.select(this).attr("fill-opacity") > 0) {
-                return "none";
+                return "white";
               }
               else
                 return "none";
             })
+            .attr("stroke-width", 0.5)
             .attr("d", function(d) {
               return arc(d.current);
             });
@@ -428,7 +486,10 @@
             .attr("fill-opacity", d => +labelVisible(d.current))
             .attr("transform", d => labelTransform(d.current, radius))
             .text(function(d) {
-              return d.data.name;
+              if (chartSettings.filename == "occupation.json")
+                return abbreviate(d.data.name);
+              else
+                return d.data.name;
             });
 
       path.filter(d => d.children)
@@ -578,10 +639,6 @@
         .attr("width", width)
         .attr("height", 40)
         .attr("id", "trail");
-    // Add the label at the end, for the percentage.
-    trail.append("svg:text")
-      .attr("id", "endlabel")
-      .style("fill", "#000");
   }
 
   // Generate a string that describes the points of a breadcrumb polygon.
@@ -617,24 +674,13 @@
     entering.append("svg:polygon")
         .attr("points", breadcrumbPoints)
         .style("fill", "#426cf5");
-        // .style("fill", function(d) { 
-        //   if (d.depth == 1)
-        //     return colors[d.data.name];
-        //   else if (d.depth == 2) {
-        //     d = d.parent;
-        //     return colors[d.data.name];
-        //   }
-        //   else {
-        //     d = d.parent;
-        //     d = d.parent;
-        //     return colors[d.data.name];
-        //   }
-        // });
 
     entering.append("svg:text")
         .attr("x", (b.w + b.t) / 2)
         .attr("y", b.h / 2)
         .attr("dy", "0.35em")
+        .style("font-size", "15px")
+        .style("font-weight", "bold")
         .style("fill", "white")
         .attr("text-anchor", "middle")
         .text(function(d) { return d.data.name; });
@@ -700,8 +746,12 @@
     return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
   }
 
-  function abbreviate(string) {
-
+  function abbreviate(str) {
+    var split_names = str.trim().split(" ");
+    if (split_names.length > 1) {
+        return (split_names[0] + " " + split_names[1].charAt(0) + "...");
+    }
+    return split_names[0];
   }
 
 
