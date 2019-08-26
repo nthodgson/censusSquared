@@ -1,0 +1,89 @@
+{
+ "name": "flare",
+ "children": [
+  {
+   "name": "Managers, Doctors, Lawyers",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 456},
+      {"name": "$40-60k", "value": 4974},
+      {"name": "$60-80k", "value": 6897},
+      {"name": "$80-100k", "value": 5989},
+      {"name": "$100k+", "value": 4118}
+   ]
+  },
+  {
+   "name": "Other Professionals",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 3268},
+      {"name": "$40-60k", "value": 9617},
+      {"name": "$60-80k", "value": 6774},
+      {"name": "$80-100k", "value": 4207},
+      {"name": "$100k+", "value": 1780}
+   ]
+  },
+  {
+   "name": "Technicians, Associate Professionals",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 911},
+      {"name": "$40-60k", "value": 2532},
+      {"name": "$60-80k", "value": 539},
+      {"name": "$80-100k", "value": 3},
+      {"name": "$100k+", "value": 0}
+   ]
+  },
+  {
+   "name": "Clerical and Sales",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 12531},
+      {"name": "$40-60k", "value": 7287},
+      {"name": "$60-80k", "value": 3696},
+      {"name": "$80-100k", "value": 204},
+      {"name": "$100k+", "value": 35}
+   ]
+  },
+  {
+   "name": "Skilled Blue Collar",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 17829},
+      {"name": "$40-60k", "value": 40258},
+      {"name": "$60-80k", "value": 2335},
+      {"name": "$80-100k", "value": 46},
+      {"name": "$100k+", "value": 0}
+   ]
+  },
+  {
+   "name": "Less Skilled Blue Collar",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 13509},
+      {"name": "$40-60k", "value": 5040},
+      {"name": "$60-80k", "value": 924},
+      {"name": "$80-100k", "value": 68},
+      {"name": "$100k+", "value": 0}
+   ]
+  },
+  {
+   "name": "Farmers",
+   "children": [
+      {"name": "$0-10k", "value": 0},
+      {"name": "$10-20k", "value": 0},
+      {"name": "$20-40k", "value": 580},
+      {"name": "$40-60k", "value": 6056},
+      {"name": "$60-80k", "value": 731},
+      {"name": "$80-100k", "value": 0},
+      {"name": "$100k+", "value": 0}
+   ]
+  }
+ ]
+}
