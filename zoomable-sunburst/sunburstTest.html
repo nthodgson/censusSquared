@@ -426,8 +426,7 @@
       }
       else {
         var root = d3.hierarchy(data)
-            .sum(function(d) { return d.value; })
-            .sort(function(a, b) { return a.value - b.value; });
+            .sum(function(d) { return d.value; });
 
       }
 
