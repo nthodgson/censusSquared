@@ -17,4 +17,10 @@ To run locally, execute the following code in the censusSquared directory, then 
 python -m http.server
 ```
 
-This serves port 8000 at http://0.0.0.0:8000/ and the web app can be accessed here on any browser. 
+This serves port 8000 at http://0.0.0.0:8000/ 
+
+The web app can then be accessed at the following URL: 
+
+```shell
+http://0.0.0.0:8000/index.html
+```
