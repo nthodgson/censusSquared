@@ -22,5 +22,5 @@ This serves port 8000 at http://0.0.0.0:8000/
 The web app can then be accessed at the following URL: 
 
 ```shell
-http://0.0.0.0:8000/index.html
+[http://0.0.0.0:8000/index.html](http://0.0.0.0:8000/index.html)
 ```
